@@ -1,0 +1,655 @@
+{
+    "basic": {
+        "name": "ftp",
+        "port": 21,
+        "isContinuous": true,
+        "state": {
+            "position": "start",
+            "dataSockAddr": "172.17.0.2",
+            "dataSockPort": 50000
+        }
+    },
+    "request": {
+        "instruct": {
+            "type": "string",
+            "value": [
+                "USER",
+                "HELP",
+                "PASS",
+                "PORT",
+                "MKD",
+                "RMD",
+                "MDTM",
+                "XMKD",
+                "ALLO",
+                "RNFR",
+                "XCWD",
+                "CWD",
+                "SITE",
+                "DELE",
+                "STAT",
+                "ACCT",
+                "STOU",
+                "REST",
+                "PASV",
+                "EPRT",
+                "LIST",
+                "STOR",
+                "APPE",
+                "RETR",
+                "EXIT",
+                "RNTO",
+                "NLST",
+                "PWD",
+                "SYST",
+                "SIZE",
+                "XMD5",
+                "XCRC",
+                "MODE",
+                "TYPE"
+            ],
+            "mandatory": true,
+            "repeatable": false
+        },
+        "space1": {
+            "type": "delimiter",
+            "value": [
+                " ",
+                "\t"
+            ],
+            "mandatory": true,
+            "repeatable": false
+        },
+        "url": {
+            "type": "string",
+            "value": [],
+            "mandatory": false,
+            "repeatable": false
+        },
+        "newline": {
+            "type": "delimiter",
+            "value": [
+                "\r\n"
+            ],
+            "mandatory": true,
+            "repeatable": false
+        }
+    },
+    "stateDiagram": {
+        "state": [
+            "start",
+            "login.user",
+            "login",
+            "openPort",
+            "openPasv",
+            "waitRNTO"
+        ],
+        "transition": {
+            "start": [
+                {
+                    "from": "start",
+                    "to": "login.user",
+                    "action": [
+                        "USER"
+                    ],
+                    "response": [
+                        "331"
+                    ]
+                },
+                {
+                    "from": "start",
+                    "to": "start",
+                    "action": [
+                        "HELP"
+                    ],
+                    "response": [
+                        "211",
+                        "214",
+                        "421",
+                        "500",
+                        "501",
+                        "502"
+                    ]
+                }
+            ],
+            "login.user": [
+                {
+                    "from": "login.user",
+                    "to": "login",
+                    "action": [
+                        "PASS"
+                    ],
+                    "response": [
+                        "230"
+                    ]
+                }
+            ],
+            "login": [
+                {
+                    "from": "login",
+                    "to": "login",
+                    "action": [
+                        "MKD",
+                        "XMKD"
+                    ],
+                    "response": [
+                        "257",
+                        "530",
+                        "550"
+                    ]
+                },
+                {
+                    "from": "login",
+                    "to": "login",
+                    "action": [
+                        "RMD"
+                    ],
+                    "response": [
+                        "250",
+                        "257",
+                        "450",
+                        "530",
+                        "550"
+                    ]
+                },
+                {
+                    "from": "login",
+                    "to": "login",
+                    "action": [
+                        "MDTM"
+                    ],
+                    "response": [
+                        "213",
+                        "550"
+                    ]
+                },
+                {
+                    "from": "login",
+                    "to": "login",
+                    "action": [
+                        "ALLO"
+                    ],
+                    "response": [
+                        "200",
+                        "500"
+                    ]
+                },
+                {
+                    "from": "login",
+                    "to": "login",
+                    "action": [
+                        "XCWD",
+                        "CWD"
+                    ],
+                    "response": [
+                        "250",
+                        "550"
+                    ]
+                },
+                {
+                    "from": "login",
+                    "to": "login",
+                    "action": [
+                        "HELP"
+                    ],
+                    "response": [
+                        "214",
+                        "421",
+                        "500",
+                        "501",
+                        "502"
+                    ]
+                },
+                {
+                    "from": "login",
+                    "to": "login",
+                    "action": [
+                        "SITE"
+                    ],
+                    "response": [
+                        "200",
+                        "202",
+                        "500",
+                        "501",
+                        "530"
+                    ]
+                },
+                {
+                    "from": "login",
+                    "to": "login",
+                    "action": [
+                        "ACCT"
+                    ],
+                    "response": [
+                        "202",
+                        "230",
+                        "421",
+                        "500",
+                        "501",
+                        "530"
+                    ]
+                },
+                {
+                    "from": "login",
+                    "to": "login",
+                    "action": [
+                        "STAT"
+                    ],
+                    "response": [
+                        "211",
+                        "212",
+                        "213",
+                        "450",
+                        "500",
+                        "501",
+                        "502",
+                        "530"
+                    ]
+                },
+                {
+                    "from": "login",
+                    "to": "login",
+                    "action": [
+                        "REST"
+                    ],
+                    "response": [
+                        "350",
+                        "421",
+                        "500",
+                        "501",
+                        "502",
+                        "530",
+                        "550"
+                    ]
+                },
+                {
+                    "from": "login",
+                    "to": "login",
+                    "action": [
+                        "EPRT"
+                    ],
+                    "response": [
+                        "200",
+                        "500",
+                        "501"
+                    ]
+                },
+                {
+                    "from": "login",
+                    "to": "login",
+                    "action": [
+                        "MODE",
+                        "TYPE"
+                    ],
+                    "response": [
+                        "200",
+                        "501",
+                        "504"
+                    ]
+                },
+                {
+                    "from": "login",
+                    "to": "login",
+                    "action": [
+                        "DELE"
+                    ],
+                    "response": [
+                        "250",
+                        "421",
+                        "450",
+                        "500",
+                        "501",
+                        "502",
+                        "530",
+                        "550"
+                    ]
+                },
+                {
+                    "from": "login",
+                    "to": "login",
+                    "action": [
+                        "PWD"
+                    ],
+                    "response": [
+                        "257"
+                    ]
+                },
+                {
+                    "from": "login",
+                    "to": "login",
+                    "action": [
+                        "SYST"
+                    ],
+                    "response": [
+                        "215"
+                    ]
+                },
+                {
+                    "from": "login",
+                    "to": "login",
+                    "action": [
+                        "SIZE"
+                    ],
+                    "response": [
+                        "213",
+                        "501",
+                        "550"
+                    ]
+                },
+                {
+                    "from": "login",
+                    "to": "login",
+                    "action": [
+                        "XMD5",
+                        "XCRC"
+                    ],
+                    "response": [
+                        "250",
+                        "550"
+                    ]
+                },
+                {
+                    "from": "login",
+                    "to": "waitRNTO",
+                    "action": [
+                        "RNFR"
+                    ],
+                    "response": [
+                        "200",
+                        "550"
+                    ]
+                },
+                {
+                    "from": "login",
+                    "to": "openPasv",
+                    "action": [
+                        "PASV"
+                    ],
+                    "response": [
+                        "227",
+                        "425"
+                    ]
+                },
+                {
+                    "from": "login",
+                    "to": "openPort",
+                    "action": [
+                        "PORT"
+                    ],
+                    "response": [
+                        "200"
+                    ]
+                }
+            ],
+            "openPort": [
+                {
+                    "from": "openPort",
+                    "to": "login",
+                    "action": [
+                        "STOR"
+                    ],
+                    "response": [
+                        "226"
+                    ]
+                },
+                {
+                    "from": "openPort",
+                    "to": "login",
+                    "action": [
+                        "LIST"
+                    ],
+                    "response": [
+                        "150",
+                        "226",
+                        "550"
+                    ]
+                },
+                {
+                    "from": "openPort",
+                    "to": "login",
+                    "action": [
+                        "APPE",
+                        "RETR"
+                    ],
+                    "response": [
+                        "150",
+                        "226",
+                        "501",
+                        "550",
+                        "425",
+                        "426",
+                        "551"
+                    ]
+                },
+                {
+                    "from": "openPort",
+                    "to": "login",
+                    "action": [
+                        "STOU"
+                    ],
+                    "response": [
+                        "110",
+                        "125",
+                        "150",
+                        "226",
+                        "250",
+                        "421",
+                        "425",
+                        "426",
+                        "450",
+                        "451",
+                        "452",
+                        "500",
+                        "501",
+                        "530",
+                        "532",
+                        "534",
+                        "535",
+                        "551",
+                        "552",
+                        "553"
+                    ]
+                },
+                {
+                    "from": "openPort",
+                    "to": "login",
+                    "action": [
+                        "NLST"
+                    ],
+                    "response": [
+                        "150",
+                        "226",
+                        "425",
+                        "426",
+                        "501",
+                        "551"
+                    ]
+                }
+            ],
+            "openPasv": [
+                {
+                    "from": "openPasv",
+                    "to": "login",
+                    "action": [
+                        "STOR"
+                    ],
+                    "response": [
+                        "226"
+                    ]
+                },
+                {
+                    "from": "openPasv",
+                    "to": "login",
+                    "action": [
+                        "LIST"
+                    ],
+                    "response": [
+                        "150 226",
+                        "550"
+                    ]
+                },
+                {
+                    "from": "openPasv",
+                    "to": "login",
+                    "action": [
+                        "STOU"
+                    ],
+                    "response": [
+                        "150",
+                        "250",
+                        "226",
+                        "425",
+                        "426",
+                        "550"
+                    ]
+                },
+                {
+                    "from": "openPasv",
+                    "to": "login",
+                    "action": [
+                        "APPE",
+                        "RETR"
+                    ],
+                    "response": [
+                        "150",
+                        "226",
+                        "425",
+                        "426",
+                        "501",
+                        "550",
+                        "551"
+                    ]
+                },
+                {
+                    "from": "openPasv",
+                    "to": "login",
+                    "action": [
+                        "NLST"
+                    ],
+                    "response": [
+                        "150",
+                        "226",
+                        "425",
+                        "426",
+                        "501",
+                        "551"
+                    ]
+                }
+            ],
+            "waitRNTO": [
+                {
+                    "from": "waitRNTO",
+                    "to": "login",
+                    "action": [
+                        "RNTO"
+                    ],
+                    "response": [
+                        "220",
+                        "500"
+                    ]
+                }
+            ]
+        }
+    },
+    "response": {
+        "110": {
+            "status line": "110 Restart marker reply..\r\n"
+        },
+        "125": {
+            "status line": "125 Data connection already opened; transfer starting..\r\n"
+        },
+        "150": {
+            "status line": "150 Here is listing.\r\n"
+        },
+        "200": {
+            "status line": "200 PORT COMMAND SUCCESSFUL.\r\n"
+        },
+        "202": {
+            "status line": "202 Command not implemented, superfluous at this site.\r\n"
+        },
+        "211": {
+            "status line": "211 System status, or system help reply.\r\n"
+        },
+        "212": {
+            "status line": "212 Directory status..\r\n"
+        },
+        "213": {
+            "status line": "213 19980705132316\r\n"
+        },
+        "214": {
+            "status line": "214 Help message.\r\n"
+        },
+        "226": {
+            "status line": "226 Transmission done.\r\n"
+        },
+        "227": {
+            "status line": "227 Entering Passive Mode (h1,h2,h3,h4,p1,p2)..\r\n"
+        },
+        "230": {
+            "status line": "230 User logged in,proceed.\r\n"
+        },
+        "250": {
+            "status line": "250 Requested file action okay, completed..\r\n"
+        },
+        "257": {
+            "status line": "257 \"PATHNAME\" created.\r\n"
+        },
+        "331": {
+            "statusLine": "331 User name okay, need password.\r\n"
+        },
+        "421": {
+            "statusLine": "421 Service not available.\r\n"
+        },
+        "425": {
+            "statusLine": "425 Can't open data connection..\r\n"
+        },
+        "426": {
+            "statusLine": "426 Connection closed; transfer aborted..\r\n"
+        },
+        "450": {
+            "statusLine": "450 Requested file action not taken..\r\n"
+        },
+        "451": {
+            "statusLine": "451 Requested action aborted. Local error in processing...\r\n"
+        },
+        "452": {
+            "statusLine": "452 Requested action not taken. Insufficient storage space in system.File unavailable (e.g., file busy).\r\n"
+        },
+        "500": {
+            "statusLine": "500 Syntax error, command unrecognized..\r\n"
+        },
+        "501": {
+            "statusLine": "501 Syntax error in parameters or argument..\r\n"
+        },
+        "502": {
+            "statusLine": "502 Command not implemented.\r\n"
+        },
+        "503": {
+            "status line": "503 Bad sequence of commands.\r\n"
+        },
+        "530": {
+            "status line": "530 Login incorrect.\r\n"
+        },
+        "532": {
+            "status line": "532 Need account for storing files.\r\n"
+        },
+        "534": {
+            "status line": "534 Could Not Connect to Server - Policy Requires SSL\r\n"
+        },
+        "535": {
+            "status line": "535 Failed security check.\r\n"
+        },
+        "550": {
+            "status line": "550 LIST failed Path name not exists.\r\n"
+        },
+        "551": {
+            "status line": "551 Requested action aborted: page type unknown.\r\n"
+        },
+        "552": {
+            "status line": "552 Requested file action aborted. Exceeded storage allocation (for current directory or dataset)..\r\n"
+        },
+        "553": {
+            "status line": "553 Requested action not taken. File name not allowed..\r\n"
+        }
+    }
+}

@@ -1,0 +1,135 @@
+{
+    "name": "http",
+    "port": 8080,
+    "isContinuous": false,
+    "state": {},
+    "restrictRequestByPosition": {},
+    "formatCheck": {
+        "method": {
+            "type": "string",
+            "value": [
+                "GET",
+                "POST",
+                "PUT"
+            ],
+            "mandatory": true,
+            "repeatable": false
+        },
+        "space1": {
+            "type": "delimiter",
+            "value": [
+                " ",
+                "\t"
+            ],
+            "mandatory": true,
+            "repeatable": true
+        },
+        "slash1": {
+            "type": "char",
+            "value": [
+                "/"
+            ],
+            "mandatory": true,
+            "repeatable": false
+        },
+        "url": {
+            "type": "string",
+            "value": [],
+            "mandatory": false,
+            "repeatable": false
+        },
+        "space2": {
+            "type": "delimiter",
+            "value": [
+                " ",
+                "\t"
+            ],
+            "mandatory": true,
+            "repeatable": true
+        },
+        "HTTP": {
+            "type": "string",
+            "value": [
+                "HTTP/"
+            ],
+            "mandatory": true,
+            "repeatable": false
+        },
+        "version": {
+            "type": "string",
+            "value": [
+                "0.9",
+                "1.0",
+                "1.1",
+                "1.2"
+            ],
+            "mandatory": true,
+            "repeatable": false
+        },
+        "newline": {
+            "type": "delimiter",
+            "value": [
+                "\r\n"
+            ],
+            "mandatory": true,
+            "repeatable": false
+        },
+        "otherheader": {
+            "type": "undefine",
+            "value": [],
+            "mandatory": false,
+            "repeatable": false
+        },
+        "emptyline": {
+            "type": "string",
+            "value": [
+                "\r\n\r\n"
+            ],
+            "mandatory": true,
+            "repeatable": false
+        },
+        "body": {
+            "type": "string",
+            "value": [],
+            "mandatory": false,
+            "repeatable": false
+        }
+    },
+    "requestToRespond": {
+        "GET": [
+            {
+                "200": "NONE"
+            }
+        ],
+        "POST": [
+            {
+                "301": "NONE"
+            },
+            {
+                "404": "NONE"
+            }
+        ]
+    },
+    "respond": {
+        "200": {
+            "statusLine": "HTTP/1.1 200 OK\r\n",
+            "header": "Content-Type: text/plain\r\nContent-Length: 0\r\nConnection: keep-alive\r\n",
+            "body": "\r\n"
+        },
+        "301": {
+            "status line": "HTTP/1.1 301 Moved Permanently\r\n",
+            "header": "Location: http://www.example.org/index.asp\r\n",
+            "body": "\r\n"
+        },
+        "400": {
+            "status line": "HTTP/1.1 400 Bad Request\r\n",
+            "header": "Server: Apache/2.2.14 (Win32)\r\nContent-Length: 0\r\nContent-Type: text/html; charset=iso-8859-1\r\nConnection: Closed\r\n",
+            "body": "\r\n"
+        },
+        "404": {
+            "status line": "HTTP/1.1 404 Not Found\r\n",
+            "header": "Server: Apache/2.2.14 (Win32)\r\nContent-Length: 0\r\nContent-Type: text/html; charset=iso-8859-1\r\n",
+            "body": "\r\n"
+        }
+    }
+}

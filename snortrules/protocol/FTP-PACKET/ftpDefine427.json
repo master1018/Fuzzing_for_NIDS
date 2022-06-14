@@ -1,0 +1,366 @@
+{
+    "name": "ftp",
+    "port": 21,
+    "isContinuous": true,
+    "state": {
+        "position": "NONE",
+        "dataSockAddr": "172.17.0.2",
+        "dataSockPort": 50000
+    },
+    "restrictRequestByPosition": {
+        "NONE": [
+            "USER",
+            "HELP"
+        ],
+        "USER": [
+            "PASS",
+            "HELP"
+        ],
+        "PASS": [
+            "PORT",
+            "MKD",
+            "RMD",
+            "MDTM",
+            "XMKD",
+            "ALLO",
+            "RNFR",
+            "XCWD",
+            "SITE",
+            "DELE",
+            "HELP",
+            "STAT",
+            "ACCT"
+        ],
+        "PORT": [
+            "STOR",
+            "LIST"
+        ],
+        "RNFR": [
+            "RNTO"
+        ],
+        "HELP": [
+            "STILL"
+        ]
+    },
+    "formatCheck": {
+        "instruct": {
+            "type": "string",
+            "value": [
+                "USER",
+                "PASS",
+                "PORT",
+                "LIST",
+                "STOR",
+                "EXIT"
+            ],
+            "mandatory": true,
+            "repeatable": false
+        },
+        "space1": {
+            "type": "delimiter",
+            "value": [
+                " ",
+                "\t"
+            ],
+            "mandatory": true,
+            "repeatable": false
+        },
+        "url": {
+            "type": "string",
+            "value": [],
+            "mandatory": false,
+            "repeatable": false
+        },
+        "newline": {
+            "type": "delimiter",
+            "value": [
+                "\r\n"
+            ],
+            "mandatory": true,
+            "repeatable": false
+        }
+    },
+    "requestToRespond": {
+        "USER": [
+            {
+                "331": "USER"
+            }
+        ],
+        "PASS": [
+            {
+                "230": "PASS"
+            }
+        ],
+        "PORT": [
+            {
+                "200": "LIST"
+            }
+        ],
+        "STOR": [
+            {
+                "226": "PASS"
+            }
+        ],
+        "LIST": [
+            {
+                "550": "PASS"
+            },
+            {
+                "150": "PASS"
+            },
+            {
+                "226": "PASS"
+            }
+        ],
+        "MKD": [
+            {
+                "530": "NONE"
+            },
+            {
+                "257": "PASS"
+            },
+            {
+                "550": "PASS"
+            }
+        ],
+        "XMKD": [
+            {
+                "530": "NONE"
+            },
+            {
+                "257": "PASS"
+            },
+            {
+                "550": "PASS"
+            }
+        ],
+        "RMD": [
+            {
+                "530": "NONE"
+            },
+            {
+                "450": "PASS"
+            },
+            {
+                "250": "PASS"
+            },
+            {
+                "257": "PASS"
+            },
+            {
+                "550": "PASS"
+            }
+        ],
+        "MDTM": [
+            {
+                "213": "PASS"
+            },
+            {
+                "550": "PASS"
+            }
+        ],
+        "ALLO": [
+            {
+                "200": "PASS"
+            },
+            {
+                "500": "PASS"
+            }
+        ],
+        "RNFR": [
+            {
+                "200": "PASS"
+            },
+            {
+                "550": "PASS"
+            }
+        ],
+        "RNTO": [
+            {
+                "200": "PASS"
+            },
+            {
+                "500": "PASS"
+            }
+        ],
+        "XCWD": [
+            {
+                "250": "PASS"
+            },
+            {
+                "550": "PASS"
+            }
+        ],
+        "HELP": [
+            {
+                "211": "STILL"
+            },
+            {
+                "214": "STILL"
+            },
+            {
+                "421": "STILL"
+            },
+            {
+                "500": "STILL"
+            },
+            {
+                "501": "STILL"
+            },
+            {
+                "502": "STILL"
+            }
+        ],
+        "SITE": [
+            {
+                "200": "PASS"
+            },
+            {
+                "202": "PASS"
+            },
+            {
+                "500": "PASS"
+            },
+            {
+                "501": "PASS"
+            },
+            {
+                "530": "PASS"
+            }
+        ],
+        "ACCT": [
+            {
+                "202": "PASS"
+            },
+            {
+                "230": "PASS"
+            },
+            {
+                "421": "PASS"
+            },
+            {
+                "500": "PASS"
+            },
+            {
+                "501": "PASS"
+            },
+            {
+                "530": "PASS"
+            }
+        ],
+        "STAT": [
+            {
+                "211": "PASS"
+            },
+            {
+                "212": "PASS"
+            },
+            {
+                "213": "PASS"
+            },
+            {
+                "450": "PASS"
+            },
+            {
+                "500": "PASS"
+            },
+            {
+                "501": "PASS"
+            },
+            {
+                "502": "PASS"
+            },
+            {
+                "530": "PASS"
+            }
+        ],
+        "DELE": [
+            {
+                "250": "PASS"
+            },
+            {
+                "421": "PASS"
+            },
+            {
+                "450": "PASS"
+            },
+            {
+                "500": "PASS"
+            },
+            {
+                "501": "PASS"
+            },
+            {
+                "502": "PASS"
+            },
+            {
+                "530": "PASS"
+            },
+            {
+                "550": "PASS"
+            }
+        ]
+    },
+    "respond": {
+        "150": {
+            "status line": "150 Here is listing.\r\n"
+        },
+        "200": {
+            "status line": "200 PORT COMMAND SUCCESSFUL.\r\n"
+        },
+        "202": {
+            "status line": "202 Command not implemented, superfluous at this site.\r\n"
+        },
+        "211": {
+            "status line": "211 System status, or system help reply.\r\n"
+        },
+        "212": {
+            "status line": "212 Directory status..\r\n"
+        },
+        "213": {
+            "status line": "213 19980705132316\r\n"
+        },
+        "214": {
+            "status line": "214 Help message.\r\n"
+        },
+        "226": {
+            "status line": "226 Transmission done.\r\n"
+        },
+        "230": {
+            "status line": "230 User logged in,proceed.\r\n"
+        },
+        "250": {
+            "status line": "250 Requested file action okay, completed..\r\n"
+        },
+        "257": {
+            "status line": "257 \"PATHNAME\" created.\r\n"
+        },
+        "331": {
+            "statusLine": "331 User name okay, need password.\r\n"
+        },
+        "421": {
+            "statusLine": "421 Service not available.\r\n"
+        },
+        "450": {
+            "statusLine": "450 Requested file action not taken..\r\n"
+        },
+        "500": {
+            "statusLine": "500 Syntax error, command unrecognized..\r\n"
+        },
+        "501": {
+            "statusLine": "501 Syntax error in parameters or argument..\r\n"
+        },
+        "502": {
+            "statusLine": "502 Command not implemented.\r\n"
+        },
+        "503": {
+            "status line": "503 Bad sequence of commands.\r\n"
+        },
+        "530": {
+            "status line": "530 Login incorrect.\r\n"
+        },
+        "550": {
+            "status line": "550 LIST failed Path name not exists.\r\n"
+        }
+    }
+}

@@ -1,0 +1,3 @@
+1. generalAnalyseServerFTP.py是服务端程序，对FTP协议支持，并且能够提供STOR,LIST两种不同方式的data-port建立
+2.ftpDefine427.json是协议定义文件，其中添加了snort关于ftp rules的前50行的规则包含的指令的状态转换
+3.boofuzz_add.py是STOR，LIST需要的在boofuzz端开启的回调函数
