@@ -6,7 +6,7 @@ def stor_callback(target, fuzz_data_logger, session, node, edge, *args, **kwargs
     print(target)
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-    s.bind(('172.17.0.2 ', 50000))
+    s.bind(('192.168.1.42 ', 50000))
     s.listen(5)
     fuzz_data_logger.log_check('Waiting for connection...')
 
@@ -32,7 +32,7 @@ def list_callback(target, fuzz_data_logger, session, node, edge, *args, **kwargs
     print(target)
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-    s.bind(('172.17.0.2 ', 50000))
+    s.bind(('192.168.1.42 ', 50000))
     s.listen(5)
     fuzz_data_logger.log_check('Waiting for connection...')
 

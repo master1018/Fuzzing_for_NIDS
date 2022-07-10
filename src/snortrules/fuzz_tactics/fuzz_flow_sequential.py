@@ -57,7 +57,7 @@ class FuzzStrategySequential(FuzzStrategyFlowBase):
         self.fuzz_primitives = fuzz_primitives
 
     def fuzz_code_generation(self):
-        code_generator = FuzzCodeGenerator(self.fuzz_primitives, 'ftp', ("172.17.0.2", 21))
+        code_generator = FuzzCodeGenerator(self.fuzz_primitives, 'ftp', ("192.168.1.42", 21))
         session = code_generator.generate_codes()
         if not session:
             pass
@@ -73,7 +73,7 @@ class FuzzStrategySequential(FuzzStrategyFlowBase):
 # -------------------------------------
 rule_file_path = "/root/github/internet_product_safe_test/snortrules/protocol/oneRule_2.rules"
 # rf = RuleFile(rule_file_path)
-fuzz_strategy = FuzzStrategySequential(rule_file_path, ['ftp'], ('172.17.0.2', 21))
+fuzz_strategy = FuzzStrategySequential(rule_file_path, ['ftp'], ('192.168.1.42', 21))
 fuzz_strategy.rule_selection()
 fuzz_strategy.implement_strategy()
 fuzz_strategy.fuzz_code_generation()

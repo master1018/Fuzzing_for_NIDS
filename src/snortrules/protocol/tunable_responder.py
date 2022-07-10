@@ -439,7 +439,7 @@ class TunableResponder(Thread):
                 #     data_socket.bind((host, dataPort))
                 #     send_command('150 OK to send data.\r\n')
                 #     time.sleep(0.3)
-                #     start_data_sock('172.17.0.2',50000,data_socket) #目前是强制的，也可以改为读取
+                #     start_data_sock('192.168.1.42',50000,data_socket) #目前是强制的，也可以改为读取
                 #     try:
                 #         pathname = os.path.join(cwd, arg)
                 #     except TypeError as err:
@@ -467,7 +467,7 @@ class TunableResponder(Thread):
                 #     data_socket.bind((host, dataPort))
                 #     send_command('150 Here comes the directory listing.\r\n')
                 #     time.sleep(0.3)
-                #     start_data_sock('172.17.0.2', 50000,data_socket)  # 目前是强制的，也可以改为读取
+                #     start_data_sock('192.168.1.42', 50000,data_socket)  # 目前是强制的，也可以改为读取
                 #     #pathname = os.path.join(cwd, arg)
                 #     #print('pathname:', pathname)
                 #     # try:

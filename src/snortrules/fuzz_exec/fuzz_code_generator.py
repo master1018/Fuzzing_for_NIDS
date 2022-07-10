@@ -1,6 +1,9 @@
 """
 很重要的文件
 """
+path = "E:\\Github\\Fuzzing_for_NIDS\\src\\snortrules"
+import sys
+sys.path.append(path)
 import os
 import time
 import json
