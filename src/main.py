@@ -64,6 +64,7 @@ def read_markdown_file(filepath):
 
 def callback1():
     st.session_state.res = 1
+    st.session_state.loading = 1
         
 
 def get_rules_file(path, type):
@@ -81,7 +82,6 @@ def res1():
             text = read_markdown_file("./markdown/1.md")
             st.markdown(text, unsafe_allow_html=True)
         rules_list = get_rules_file("./db/snort/", "rules")
-        print(rules_list)
         df = list_to_df(rules_list, ["规则集文件"])
         c1, c2 = st.columns(2)
         with c1:
@@ -102,10 +102,34 @@ def res1():
             with st.expander(st.session_state.show_rule):
                 st.code(buff)
 
+def callback2():
+    st.session_state.foot = 2
+
+def show_loading1():
+    c1, c2 = st.columns(2)
+    with c1:
+        st.image("./image/loading.gif", width=300)
+    ele = c2.empty()
+    with ele:
+        st.header("Loading...")
+    st.write(" ")
+    st.write(" ")
+    st.write(" ")
+    st.write(" ")
+    time.sleep(3)
+    with ele:
+        st.header("Finish!")
+    st.button("下一页", on_click=callback2)
+    st.session_state.loading = 0
+    
+
 def ui1():
     st.header("这是主页")
 
 def ui2():
+    if st.session_state.loading == 1:
+        show_loading1()
+        return 0
     if st.session_state.res == 1:
         res1()
         return 0
@@ -173,6 +197,8 @@ def init():
         st.session_state.res = 0
     if "show_rule" not in st.session_state:
         st.session_state.show_rule = "null"
+    if "loading" not in st.session_state:
+        st.session_state.loading = 0
 
 
 def main():
@@ -186,7 +212,7 @@ def main():
         st.session_state.foot = 2
     elif selected == "系统检测":
         st.session_state.foot = 3
-
+    
     if st.session_state.foot == 1:
         ui1()
     elif st.session_state.foot == 2:
