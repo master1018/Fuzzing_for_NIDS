@@ -83,7 +83,24 @@ def res1():
         rules_list = get_rules_file("./db/snort/", "rules")
         print(rules_list)
         df = list_to_df(rules_list, ["规则集文件"])
-        aggrid(df, "规则集文件")
+        c1, c2 = st.columns(2)
+        with c1:
+            st.markdown("""
+            <video width="400" autoplay="true" muted="true" loop="true" align="center">
+            <source 
+                    src="https://www.jfrogchina.com/wp-content/uploads/2020/02/Realtime-Vul-R1-Animation-400X400.mp4" 
+                    type="video/mp4" />
+            </video>
+            """, unsafe_allow_html=True)
+        with c2:
+            st.session_state.show_rule = aggrid(df, "规则集文件")
+        if st.session_state.show_rule != "null" and st.session_state.show_rule != -1:
+            rule_file = "./db/snort/" + st.session_state.show_rule
+            fp = open(rule_file, "r")
+            buff = fp.read()
+            fp.close()
+            with st.expander(st.session_state.show_rule):
+                st.code(buff)
 
 def ui1():
     st.header("这是主页")
@@ -154,6 +171,8 @@ def init():
         st.session_state.product = 0
     if "res" not in st.session_state:
         st.session_state.res = 0
+    if "show_rule" not in st.session_state:
+        st.session_state.show_rule = "null"
 
 
 def main():
