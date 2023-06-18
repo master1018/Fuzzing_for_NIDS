@@ -18,17 +18,42 @@ from streamlit_elements import dashboard
 import random
 
 
+def read_markdown_file(filepath):
+    with open(filepath, 'r', encoding='utf-8') as f:
+        return f.read()
+
 def callback1():
-    st.write("success")
+    st.session_state.res = 1
+        
+
+def res1():
+    if st.session_state.product == 1:
+        st.header("Snort接口导入成功")
+        with st.expander("版本信息"):
+            text = read_markdown_file("./markdown/1.md")
+            st.markdown(text, unsafe_allow_html=True)
+        
 
 def ui1():
     st.header("这是主页")
 
 def ui2():
-    c1, c2, c3 = st.columns([0.3, 0.6, 0.1])
+    if st.session_state.res == 1:
+        res1()
+        return 0
+    c1, c2, c3, c4 = st.columns([0.3, 0.4, 0.2, 0.1])
     c1.write("logo")
     c2.header("测试产品导入")
-    c3.button("开始导入")
+    select = c3.selectbox("测试接口选择", ["Snort", "Suricata", "Zeek"])
+    if select == "Snort":
+        st.session_state.product = 1
+    elif select == "Suricata":
+        st.session_state.product = 2
+    elif select == "Zeek":
+        st.session_state.product = 3
+    c4.write(" ")
+    c4.write(" ")
+    c4.button("导入", on_click=callback1)
 
     c4, c5, c6 = st.columns(3)
 
@@ -71,8 +96,10 @@ def ui3():
 def init():
     if "foot" not in st.session_state:
         st.session_state.foot = 1
-    if "show_product" not in st.session_state:
-        st.session_state.show_product = 0
+    if "product" not in st.session_state:
+        st.session_state.product = 0
+    if "res" not in st.session_state:
+        st.session_state.res = 0
 def main():
     init()
     with st.sidebar:
@@ -84,12 +111,11 @@ def main():
         st.session_state.foot = 2
     elif selected == "系统检测":
         st.session_state.foot = 3
-    
+
     if st.session_state.foot == 1:
         ui1()
     elif st.session_state.foot == 2:
         ui2()
-
     
 
 if __name__ == "__main__":
