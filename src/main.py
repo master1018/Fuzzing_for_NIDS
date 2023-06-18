@@ -17,6 +17,46 @@ from streamlit_elements import elements, mui, html
 from streamlit_elements import dashboard
 import random
 
+def aggrid(df, key):
+    gb = GridOptionsBuilder.from_dataframe(df)
+    selection_mode = 'single' # 定义单选模式，多选为'multiple'
+    enable_enterprise_modules = True # 设置企业化模型，可以筛选等
+    #gb.configure_default_column(editable=True) #定义允许编辑
+    
+    return_mode_value = DataReturnMode.FILTERED  #__members__[return_mode]
+    gb.configure_selection(selection_mode, use_checkbox=True) # 定义use_checkbox
+    
+    gb.configure_side_bar()
+    gb.configure_grid_options(domLayout='normal')
+    gb.configure_pagination(paginationAutoPageSize=False, paginationPageSize=10)
+    #gb.configure_default_column(editable=True, groupable=True)
+    gridOptions = gb.build()
+    
+    update_mode_value = GridUpdateMode.MODEL_CHANGED
+    
+    grid_response = AgGrid(
+                        df, 
+                        gridOptions=gridOptions,
+                        fit_columns_on_grid_load = True,
+                        data_return_mode=return_mode_value,
+                        update_mode=update_mode_value,
+                        enable_enterprise_modules=enable_enterprise_modules,
+                        theme='streamlit'
+                        )  
+    #df = grid_response['data']
+    selected = grid_response['selected_rows']
+    if len(selected) == 0:
+        return -1
+    else:
+        return selected[0][key]  
+
+
+def list_to_df(src_list, colums_name):
+    src_array = np.array(src_list)
+    df = pd.DataFrame(src_array)
+    df.columns = colums_name
+    return df
+
 
 def read_markdown_file(filepath):
     with open(filepath, 'r', encoding='utf-8') as f:
@@ -26,13 +66,24 @@ def callback1():
     st.session_state.res = 1
         
 
+def get_rules_file(path, type):
+    dir = os.listdir(path)
+    file_list = []
+    for file in dir:
+        if type in file:
+            file_list.append([file])
+    return file_list
+
 def res1():
     if st.session_state.product == 1:
         st.header("Snort接口导入成功")
         with st.expander("版本信息"):
             text = read_markdown_file("./markdown/1.md")
             st.markdown(text, unsafe_allow_html=True)
-        
+        rules_list = get_rules_file("./db/snort/", "rules")
+        print(rules_list)
+        df = list_to_df(rules_list, ["规则集文件"])
+        aggrid(df, "规则集文件")
 
 def ui1():
     st.header("这是主页")
@@ -100,6 +151,8 @@ def init():
         st.session_state.product = 0
     if "res" not in st.session_state:
         st.session_state.res = 0
+
+
 def main():
     init()
     with st.sidebar:
