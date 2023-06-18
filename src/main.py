@@ -154,7 +154,7 @@ def ui2():
             with mui.Paper(elevation=6):
                 with mui.Typography():
                     html.h1(html.font("Zeek", color="purple"))
-                    html.img(src="https://github.com/master1018/Fuzzing_for_NIDS/blob/main/src/image/Zeek.png", width=200, height=200)
+                    html.img(src="https://github.com/master1018/Fuzzing_for_NIDS/blob/main/Zeek.png?raw=true", width=300, height=250)
                     html.div("Zeek是一种开源网络安全监控和分析工具，旨在帮助用户检测、分析和应对网络中的安全事件。它最初由加州大学伯克利分校的国际计算机科学研究所（ICSI）开发，并在2005年发布，起初被称为Bro。在2018年，该项目更名为Zeek。",css={"text-indent":"2em"})
                     html.div("Zeek通过监控网络流量来捕获各种网络活动，并提供了一个强大的脚本编程语言，允许用户自定义和扩展其功能，能够解析网络流量中的各种协议。",css={"text-indent":"2em"})
                 with mui.Button(align="bottom",color="inherit", size="small",variant="string"):

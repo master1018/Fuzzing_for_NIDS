@@ -25,7 +25,7 @@ serverPort = 21
 dataPort = 20
 protocal = 'ftp'
 # host = '172.16.39.141'
-host = '172.17.0.2'
+host = '192.168.1.42'
 badRequestResponse = ''
 badSequenceResponse = ''
 
@@ -434,7 +434,7 @@ def main():
             #     dataSocket.bind((host, dataPort))
             #     sendCommand('150 OK to send data.\r\n')
             #     time.sleep(0.3)
-            #     startDataSock('172.17.0.2',50000,dataSocket) #目前是强制的，也可以改为读取
+            #     startDataSock('192.168.1.42',50000,dataSocket) #目前是强制的，也可以改为读取
             #     try:
             #         pathname = os.path.join(cwd, arg)
             #     except TypeError as err:
@@ -462,7 +462,7 @@ def main():
             #     dataSocket.bind((host, dataPort))
             #     sendCommand('150 Here comes the directory listing.\r\n')
             #     time.sleep(0.3)
-            #     startDataSock('172.17.0.2', 50000,dataSocket)  # 目前是强制的，也可以改为读取
+            #     startDataSock('192.168.1.42', 50000,dataSocket)  # 目前是强制的，也可以改为读取
             #     #pathname = os.path.join(cwd, arg)
             #     #print('pathname:', pathname)
             #     # try:

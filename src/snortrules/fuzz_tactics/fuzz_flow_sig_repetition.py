@@ -238,7 +238,7 @@ class FuzzStrategySigRepetition(FuzzStrategyFlowBase):
 rule_file_path = "/root/github/internet_product_safe_test/snortrules/protocol/oneRule.rules"
 #rule_file_path="./expRules.rules"
 #rf = RuleFile(rule_file_path)
-fuzz_strategy = FuzzStrategySigRepetition(rule_file_path, ['ftp'], ('172.17.0.2', 21))
+fuzz_strategy = FuzzStrategySigRepetition(rule_file_path, ['ftp'], ('192.168.1.42', 21))
 #fuzz_strategy.rule_selection()
 fuzz_strategy.implement_strategy()
 fuzz_strategy.fuzz_code_generation()

@@ -373,7 +373,7 @@ while True:
             dataSocket.bind((host, dataPort))
             sendCommand('150 OK to send data.\r\n')
             time.sleep(1)
-            startDataSock('172.17.0.2 ',50000,dataSocket) #目前是强制的，也可以改为读取
+            startDataSock('192.168.1.42 ',50000,dataSocket) #目前是强制的，也可以改为读取
             pathname = os.path.join(cwd, arg)
             print('pathname:',pathname)
             try:
@@ -395,7 +395,7 @@ while True:
             dataSocket.bind((host, dataPort))
             sendCommand('150 Here comes the directory listing.\r\n')
             time.sleep(1)
-            startDataSock('172.17.0.2 ', 50000,dataSocket)  # 目前是强制的，也可以改为读取
+            startDataSock('192.168.1.42 ', 50000,dataSocket)  # 目前是强制的，也可以改为读取
             #pathname = os.path.join(cwd, arg)
             #print('pathname:', pathname)
             # try:

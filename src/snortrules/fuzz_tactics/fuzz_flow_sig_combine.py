@@ -1,13 +1,15 @@
 #!/usr/bin/env python
+from ctypes import sizeof
 import random
-path = "/root/github/internet_product_safe_test/snortrules"
+from urllib.error import ContentTooShortError
 
+path = "E:\\Github\\Fuzzing_for_NIDS\\src\\snortrules"
 import sys
-
 sys.path.append(path)
 from rule_parse.snort_rules import *
 from fuzz_exec.rule_selection import RuleInfo
 from fuzz_tactics.fuzz_flow_base import FuzzStrategyFlowBase
+#from fuzz_exec.fuzz_code_generator import FuzzCodeGenerator, FuzzPrimitive, generate_data_from_rule
 from alert_analysis.alert_inference import hex_str_to_char_str
 
 
@@ -112,7 +114,7 @@ class Signature(object):
 
 
 class FuzzStrategySigCombine(FuzzStrategyFlowBase):
-    def __init__(self, rule_file, protocols, target, max_rule_num=10, iteration=5):
+    def __init__(self, rule_file, protocols, target, max_rule_num=10, iteration=1):
         super(FuzzStrategySigCombine, self).__init__('sig_combine', rule_file, protocols, target)
         self.rule_list = self.rule_file.get_rule_set(is_active=True)  # list of rules as SnortRule
         self._combined_sig_dict = {}
@@ -155,20 +157,27 @@ class FuzzStrategySigCombine(FuzzStrategyFlowBase):
                 else:
                     for i in range(self.iteration):
                         rule_pool = rules
+                        # random chose max_rule_num rules and add them in the considered_rules
                         considered_rules.append(random.sample(rules, self.max_rule_num))
-                        rules_to_combine = [rule for rule in rule_pool if rule not in considered_rules]
+                        rules_to_combine = considered_rules[0] ##[rule for rule in rule_pool if rule not in considered_rules]
                         for rule in rules_to_combine:
                             rule_attr = SnortRuleAttr(rule)
                             rule_id = '-'.join([str(rule_attr.get_opt_gid()), str(rule_attr.get_opt_sid())])
                             contents = rule_attr.get_opt_content()
                             previous_signature = Signature(rule_id)
-                            previous_signature.construct_from_content(contents[0])
+                           
+
+                            ##for content in contents:
+                            ##    previous_signature.construct_from_content(content)
+                            ##previous_signature.construct_from_content(contents[0])
                             rule_adopt_flag = True
                             for content in contents:
                                 signature = Signature(rule_id)
                                 signature.construct_from_content(content)
+                                
                                 if content['distance'] is not None or content['within'] is not None:
                                     if self._fit_signature_into_combined_list(signature, previous_signature):
+                                        previous_signature = signature
                                         continue
                                     else:
                                         self._pop_out_signatures(rule_id)
@@ -176,6 +185,7 @@ class FuzzStrategySigCombine(FuzzStrategyFlowBase):
                                         break
                                 else:
                                     if self._fit_signature_into_combined_list(signature):
+                                        previous_signature = signature
                                         continue
                                     else:
                                         self._pop_out_signatures(rule_id)
@@ -217,7 +227,8 @@ class FuzzStrategySigCombine(FuzzStrategyFlowBase):
             if signature.range is None:
                 signature.index = len(self._combined_sig_dict[sticky_buffer])
                 ########################################################################################################################length 是个啥玩意
-                signature.start_pos = self._combined_sig_dict[sticky_buffer][0].start_pos + self._combined_sig_dict[sticky_buffer][0].length
+                
+                signature.start_pos = self._combined_sig_dict[sticky_buffer][self._combined_rule_num - 1].start_pos + self._combined_sig_dict[sticky_buffer][self._combined_rule_num - 1].length
                 self._combined_sig_dict[sticky_buffer].append(signature)
                 return True
             # if the signature does have range modifier, parse the absolute and relative modifiers in turn
@@ -335,8 +346,7 @@ class FuzzStrategySigCombine(FuzzStrategyFlowBase):
             # there would be at least one available position in the list, namely the position that
             # follows the last signature
             available_positions = []
-            if previous_sig:
-                
+            if previous_sig:      
                 if previous_sig in self._combined_sig_dict[sticky_buffer]:
                     previous_sig_end = previous_sig.start_pos + previous_sig.length
                 else:
@@ -353,6 +363,14 @@ class FuzzStrategySigCombine(FuzzStrategyFlowBase):
             return available_positions
 
     def fuzz_code_generation(self):
+        """
+        code_generator = FuzzCodeGenerator(self.fuzz_primitives, 'ftp', ("192.168.1.42", 21))
+        session = code_generator.generate_codes()
+        if not session:
+            pass
+        else:
+            self.session = session
+        """
         return
 
     def _update_sig_index(self):
@@ -362,9 +380,23 @@ class FuzzStrategySigCombine(FuzzStrategyFlowBase):
 # test codes
 # -------------------------------------
 if __name__== "__main__":
-    rule_file_path = "/root/github/internet_product_safe_test/snortrules/protocol/oneRule_2.rules"
-    fuzz_strategy = FuzzStrategySigCombine(rule_file_path, ['ftp'], ('172.17.0.2', 21))
+    rule_file_path = "E:\\Github\\Fuzzing_for_NIDS\\src\\snortrules\\protocol\\oneRule_2.rules"
+    fuzz_strategy = FuzzStrategySigCombine(rule_file_path, ['ftp'], ('192.168.1.42', 21))
     fuzz_strategy.rule_selection()
     fuzz_strategy.implement_strategy()
     fuzz_strategy.fuzz_code_generation()
+    print(fuzz_strategy._combined_rule_num)
+    print(fuzz_strategy._combined_sig_dict)
     print(fuzz_strategy.session)
+
+    #f = open("E:\\Github\\Fuzzing_for_NIDS\src\\result_analysis\\test.txt", "a+")
+    #for sig in fuzz_strategy._combined_sig_dict['none']:
+    #    print(sig.index, file=f)
+    #    print(sig.pattern_str, file=f)
+    #    print(sig.sticky_buffer, file=f)
+    #    print(sig.start_pos, file=f)
+    #    print(sig.range, file=f)
+    #   print(sig.sig_type, file=f)
+    #    print(sig.rule_id, file=f)
+    #    #print("\n", file=f)
+    #f.close()

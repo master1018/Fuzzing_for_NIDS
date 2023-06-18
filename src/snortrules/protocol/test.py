@@ -76,7 +76,7 @@ def alert_check_post_case_callback(target, fuzz_data_logger, session, *args, **k
 def main():
     session = Session(
         restart_sleep_time=1,
-        target=Target(connection=TCPSocketConnection("172.17.0.2", port=21)),
+        target=Target(connection=TCPSocketConnection("192.168.1.42", port=21)),
         ignore_connection_issues_when_sending_fuzz_data=False,
         post_test_case_callbacks=[alert_check_post_case_callback]
     )
