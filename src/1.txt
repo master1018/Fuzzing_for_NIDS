@@ -1,0 +1,177 @@
+snortrules
+├── alert_analysis
+│   ├── __pycache__
+│   │   ├── alert_inference.cpython-36.pyc
+│   │   ├── alert_inference.cpython-38.pyc
+│   │   ├── fuzzed_cases.cpython-36.pyc
+│   │   ├── fuzzed_cases.cpython-38.pyc
+│   │   ├── snort_log_file.cpython-36.pyc
+│   │   ├── snort_log_file.cpython-38.pyc
+│   │   ├── snort_unix_socket.cpython-36.pyc
+│   │   └── snort_unix_socket.cpython-38.pyc
+│   ├── alert_inference.py
+│   ├── callback.py
+│   ├── fuzzed_cases.py
+│   ├── get_console.py
+│   ├── snort_log_file.py
+│   └── snort_unix_socket.py
+├── fuzz_exec
+│   ├── __pycache__
+│   │   ├── fuzz_code_generator.cpython-38.pyc
+│   │   ├── rule_selection.cpython-36.pyc
+│   │   └── rule_selection.cpython-38.pyc
+│   ├── fuzz_code_generator.py
+│   ├── fuzz_orchestrator.py
+│   ├── rule_selection.py
+│   └── rule_trim.py
+├── fuzz_tactics
+│   ├── __pycache__
+│   │   ├── fuzz_flow_base.cpython-36.pyc
+│   │   ├── fuzz_flow_base.cpython-38.pyc
+│   │   └── fuzz_flow_sig_combine.cpython-38.pyc
+│   ├── boofuzz-results
+│   │   ├── run-2020-11-03T01-38-04.db
+│   │   ├── run-2020-11-03T02-05-21.db
+│   │   └── run-2020-11-03T02-57-06.db
+│   ├── fuzz_flow_base.py
+│   ├── fuzz_flow_encoding_mutation.py
+│   ├── fuzz_flow_sequential.py
+│   ├── fuzz_flow_sig_combine.py
+│   ├── fuzz_flow_sig_repetition.py
+│   ├── fuzz_flow_stateful_fuzz.py
+│   ├── rule_model.txt
+│   └── state_graph.py
+├── protocol
+│   ├── FTP-PACKET
+│   │   ├── boofuzz_add.py
+│   │   ├── ftpDefine.json
+│   │   ├── ftpDefine427.json
+│   │   ├── ftpDefine428.json
+│   │   ├── ftpServer.py
+│   │   ├── generalAnalyseServerFTP.py
+│   │   ├── httpDefineNew413.json
+│   │   └── readme.txt
+│   ├── __pycache__
+│   │   ├── protocols.cpython-36.pyc
+│   │   ├── protocols.cpython-38.pyc
+│   │   ├── test.cpython-36.pyc
+│   │   └── test.cpython-38.pyc
+│   ├── boofuzz-results
+│   │   ├── case_list.txt
+│   │   └── demo.py
+│   ├── ftpServer.py
+│   ├── ftp_protocol_specification.json
+│   ├── get_status_code_server.py
+│   ├── http_protocol_specification.json
+│   ├── oneRule.rules
+│   ├── oneRule_2.rules
+│   ├── packet_reflect_module_side_server.py
+│   ├── protocols.py
+│   ├── test.py
+│   └── tunable_responder.py
+├── ruleStatistics.py
+├── rule_model
+│   ├── Rule_samples.rules
+│   ├── __pycache__
+│   │   ├── rule_model.cpython-36.pyc
+│   │   └── rule_model.cpython-38.pyc
+│   ├── rm_test.py
+│   ├── ruleModel.py
+│   └── rule_model.py
+├── rule_parse
+│   ├── __pycache__
+│   │   ├── snort_rules.cpython-36.pyc
+│   │   └── snort_rules.cpython-38.pyc
+│   ├── rule_statistics.py
+│   └── snort_rules.py
+├── snort_rules
+│   ├── VRT-License.txt
+│   ├── builtins
+│   │   └── builtins.rules
+│   ├── etc
+│   │   ├── file_magic.lua
+│   │   ├── snort.lua
+│   │   └── snort_defaults.lua
+│   ├── snort3-app-detect.rules
+│   ├── snort3-blacklist.rules
+│   ├── snort3-browser-chrome.rules
+│   ├── snort3-browser-firefox.rules
+│   ├── snort3-browser-ie.rules
+│   ├── snort3-browser-other.rules
+│   ├── snort3-browser-plugins.rules
+│   ├── snort3-browser-webkit.rules
+│   ├── snort3-community-rules
+│   │   ├── AUTHORS
+│   │   ├── LICENSE
+│   │   ├── VRT-License.txt
+│   │   ├── sid-msg.map
+│   │   └── snort3-community.rules
+│   ├── snort3-content-replace.rules
+│   ├── snort3-deleted.rules
+│   ├── snort3-exploit-kit.rules
+│   ├── snort3-file-executable.rules
+│   ├── snort3-file-flash.rules
+│   ├── snort3-file-identify.rules
+│   ├── snort3-file-image.rules
+│   ├── snort3-file-java.rules
+│   ├── snort3-file-multimedia.rules
+│   ├── snort3-file-office.rules
+│   ├── snort3-file-other.rules
+│   ├── snort3-file-pdf.rules
+│   ├── snort3-indicator-compromise.rules
+│   ├── snort3-indicator-obfuscation.rules
+│   ├── snort3-indicator-scan.rules
+│   ├── snort3-indicator-shellcode.rules
+│   ├── snort3-malware-backdoor.rules
+│   ├── snort3-malware-cnc.rules
+│   ├── snort3-malware-other.rules
+│   ├── snort3-malware-tools.rules
+│   ├── snort3-netbios.rules
+│   ├── snort3-os-linux.rules
+│   ├── snort3-os-mobile.rules
+│   ├── snort3-os-other.rules
+│   ├── snort3-os-solaris.rules
+│   ├── snort3-os-windows.rules
+│   ├── snort3-policy-multimedia.rules
+│   ├── snort3-policy-other.rules
+│   ├── snort3-policy-social.rules
+│   ├── snort3-policy-spam.rules
+│   ├── snort3-protocol-dns.rules
+│   ├── snort3-protocol-finger.rules
+│   ├── snort3-protocol-ftp.rules
+│   ├── snort3-protocol-icmp.rules
+│   ├── snort3-protocol-imap.rules
+│   ├── snort3-protocol-nntp.rules
+│   ├── snort3-protocol-other.rules
+│   ├── snort3-protocol-pop.rules
+│   ├── snort3-protocol-rpc.rules
+│   ├── snort3-protocol-scada.rules
+│   ├── snort3-protocol-services.rules
+│   ├── snort3-protocol-snmp.rules
+│   ├── snort3-protocol-telnet.rules
+│   ├── snort3-protocol-tftp.rules
+│   ├── snort3-protocol-voip.rules
+│   ├── snort3-pua-adware.rules
+│   ├── snort3-pua-other.rules
+│   ├── snort3-pua-p2p.rules
+│   ├── snort3-pua-toolbars.rules
+│   ├── snort3-scada.rules
+│   ├── snort3-server-apache.rules
+│   ├── snort3-server-iis.rules
+│   ├── snort3-server-mail.rules
+│   ├── snort3-server-mssql.rules
+│   ├── snort3-server-mysql.rules
+│   ├── snort3-server-oracle.rules
+│   ├── snort3-server-other.rules
+│   ├── snort3-server-samba.rules
+│   ├── snort3-server-webapp.rules
+│   ├── snort3-sql.rules
+│   └── snort3-x11.rules
+├── snort_rules.py
+├── test.txt
+└── utils
+    ├── 404_message.log
+    ├── arbitrary_pkt_send.py
+    └── cve_access.py
+
+21 directories, 154 files

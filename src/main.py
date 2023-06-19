@@ -18,9 +18,13 @@ from streamlit_elements import dashboard
 import random
 from test import shell
 
-def aggrid(df, key):
+def aggrid(df, key, keys=0):
+
     gb = GridOptionsBuilder.from_dataframe(df)
-    selection_mode = 'multiple' # 定义单选模式，多选为'multiple'
+    if keys == 0:
+        selection_mode = 'multiple' # 定义单选模式，多选为'multiple'
+    else:
+        selection_mode = 'single'
     enable_enterprise_modules = True # 设置企业化模型，可以筛选等
     #gb.configure_default_column(editable=True) #定义允许编辑
     
@@ -49,10 +53,13 @@ def aggrid(df, key):
     if len(selected) == 0:
         return -1
     else:
-        return_list = []
-        for i in range(0, len(selected)):
-            return_list.append(selected[i][key])
-        return return_list
+        if keys == 0:
+            return_list = []
+            for i in range(0, len(selected)):
+                return_list.append(selected[i][key])
+            return return_list
+        else:
+            return [selected[0][keys[0]], selected[0][keys[1]]]
 
 
 def list_to_df(src_list, colums_name):
@@ -139,15 +146,26 @@ def show_loading1():
 
 def ui1():
     st.markdown("""
-            <video  autoplay="true" muted="true" loop="true" align="center">
+            <video width="1000" autoplay="true" muted="true" loop="true" align="center">
             <source 
-                    src="https://www.jfrogchina.com/wp-content/uploads/2020/02/Realtime-Vul-R1-Animation-400X400.mp4" 
+                    src="https://video.3wt.eduingame.cn/2023/06-19/39f9d0628ca44247bb3e627ce1e311d33wcn470624.mp4" 
+                    type="video/mp4" />
+            </video>
+            """, unsafe_allow_html=True)
+    for i in range(0, 10):
+        st.write(" ")
+
+    st.markdown("""
+            <video width="1000" autoplay="true" muted="true" loop="true" align="center">
+            <source 
+                    src="http://localhost:8000/2023%20%281%29.mp4" 
                     type="video/mp4" />
             </video>
             """, unsafe_allow_html=True)
 
 def callback4():
     st.session_state.run = 1
+
 
 def res2():
     m = st.markdown("""
@@ -244,6 +262,7 @@ def res2():
                     st.markdown("""
                         <p align="center">✅ Exp {0}</p>
                     """.format(i + 1), unsafe_allow_html=True)
+                st.session_state.show_res = 1
             time.sleep(1)
             if i < 9:
                 ele1.empty()
@@ -264,9 +283,11 @@ def ui2():
         res1()
         return 0
     
-    c1, c2, c3, c4 = st.columns([0.3, 0.4, 0.2, 0.1])
-    c1.write("logo")
-    c2.header("测试产品导入")
+    c1, c3, c4 = st.columns([0.7,  0.2, 0.1])
+    #c1.write("logo")
+    #c2.header("测试产品导入")
+    c1.image("./image/2023.jpg")
+
     select = c3.selectbox("测试接口选择", ["Snort", "Suricata", "Zeek"])
     if select == "Snort":
         st.session_state.product = 1
@@ -317,17 +338,21 @@ def ui2():
                         mui.Typography("Read More")
 
 def ui3():
-    st.header("Title")
-    ele1 = st.empty()
-    with ele1:
-        st.header("正在检测配置的接口...")
-    time.sleep(0.1)
-    if st.session_state.product == 0:
-        with ele1:
-            st.header("接口加载失败，请确任您已经配置了接口")
-    else:
-        with ele1:
-            st.header("接口配置成功!")
+    if st.session_state.show_res == 0:
+        st.write("no result")
+        return 0
+    elif st.session_state.show_res == 1:
+        res_list = []
+        fp = open("./tmp/res")
+        while True:
+            line = fp.readline()
+            if not line:
+                break
+            if line[len(line) - 1] == "\n":
+                line = line[0: len(line) - 1]
+            res_list.append(line.split(" "))
+        df = list_to_df(res_list, ["IDS名", "规则集索引", "规则项索引", "漏洞"])
+        a = aggrid(df, 0,["规则集索引", "规则项索引"])
 
 def init():
     if "foot" not in st.session_state:
@@ -344,6 +369,8 @@ def init():
         st.session_state.count = 0
     if "run" not in st.session_state:
         st.session_state.run = 0
+    if "show_res" not in st.session_state:
+        st.session_state.show_res = 0
 
 def main():
     init()
@@ -363,6 +390,7 @@ def main():
     elif st.session_state.foot == 2:
         ui2()
     elif st.session_state.foot == 3:
+        st.session_state.show_res = 1
         ui3()
     
 

@@ -1,0 +1,3 @@
+snort snort3-protocol-ftp 19 SIGN_REPEAT
+snort snort3-protocol-ftp 63 SIGN_PEPEAT
+snort snort3-browser-chrome 22 SIGN_ALGORITHM
