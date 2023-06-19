@@ -16,10 +16,11 @@ from PIL import Image
 from streamlit_elements import elements, mui, html
 from streamlit_elements import dashboard
 import random
+from test import shell
 
 def aggrid(df, key):
     gb = GridOptionsBuilder.from_dataframe(df)
-    selection_mode = 'single' # 定义单选模式，多选为'multiple'
+    selection_mode = 'multiple' # 定义单选模式，多选为'multiple'
     enable_enterprise_modules = True # 设置企业化模型，可以筛选等
     #gb.configure_default_column(editable=True) #定义允许编辑
     
@@ -48,7 +49,10 @@ def aggrid(df, key):
     if len(selected) == 0:
         return -1
     else:
-        return selected[0][key]  
+        return_list = []
+        for i in range(0, len(selected)):
+            return_list.append(selected[i][key])
+        return return_list
 
 
 def list_to_df(src_list, colums_name):
@@ -75,7 +79,14 @@ def get_rules_file(path, type):
             file_list.append([file])
     return file_list
 
+def callback3():
+    st.session_state.res = 2
+
 def res1():
+    if st.session_state.res == 2:
+        res2()
+        return 0
+    
     if st.session_state.product == 1:
         st.header("Snort接口导入成功")
         with st.expander("版本信息"):
@@ -95,12 +106,15 @@ def res1():
         with c2:
             st.session_state.show_rule = aggrid(df, "规则集文件")
         if st.session_state.show_rule != "null" and st.session_state.show_rule != -1:
-            rule_file = "./db/snort/" + st.session_state.show_rule
-            fp = open(rule_file, "r")
-            buff = fp.read()
-            fp.close()
-            with st.expander(st.session_state.show_rule):
-                st.code(buff)
+            for i in range(0, len(st.session_state.show_rule)):
+                rule_file = "./db/snort/" + st.session_state.show_rule[i]
+                fp = open(rule_file, "r")
+                buff = fp.read()
+                fp.close()
+                with st.expander(st.session_state.show_rule[i]):
+                    st.code(buff)
+        
+            st.button("导入选中规则集", on_click=callback3)
 
 def callback2():
     st.session_state.foot = 2
@@ -116,7 +130,7 @@ def show_loading1():
     st.write(" ")
     st.write(" ")
     st.write(" ")
-    time.sleep(3)
+    time.sleep(0.3)
     with ele:
         st.header("Finish!")
     st.button("下一页", on_click=callback2)
@@ -124,15 +138,132 @@ def show_loading1():
     
 
 def ui1():
-    st.header("这是主页")
+    st.markdown("""
+            <video  autoplay="true" muted="true" loop="true" align="center">
+            <source 
+                    src="https://www.jfrogchina.com/wp-content/uploads/2020/02/Realtime-Vul-R1-Animation-400X400.mp4" 
+                    type="video/mp4" />
+            </video>
+            """, unsafe_allow_html=True)
+
+def callback4():
+    st.session_state.run = 1
+
+def res2():
+    m = st.markdown("""
+    <style>
+    div.stButton > button:first-child {
+        background-color: #f44336; /* Green */
+        border: none;
+        color: white;
+        padding: 20px 40px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+    }
+    </style>""", unsafe_allow_html=True)
+    c1, c2, c3 = st.columns(3)
+    st.session_state.count += 1
+    with c1:
+        st.markdown("""
+            <video width="250" autoplay="true" muted="true" loop="true" align="center">
+            <source 
+                    src="https://www.jfrogchina.com/wp-content/uploads/2020/02/efficient.mp4" 
+                    type="video/mp4" />
+            </video>
+            <h3 align="center">运行时间</h3>
+                """, unsafe_allow_html=True)
+   # c1, c2 = st.columns(2)
+    with c2:
+        st.markdown("""
+            <video width="250" autoplay="true" muted="true" loop="true">
+            <source 
+                    src="https://www.jfrogchina.com/wp-content/uploads/2017/10/artifactory-feature-4-1.mp4" 
+                    type="video/mp4" />
+            </video>
+            <h3 align="center">运行测试样咧</h3>
+            """, unsafe_allow_html=True)
+    with c3:
+        st.markdown("""
+            <video width="250" autoplay="true" muted="true" loop="true">
+            <source 
+                    src="https://www.jfrogchina.com/wp-content/uploads/2020/02/delivering-trust.mp4" 
+                    type="video/mp4" />
+            </video>
+            <h3 align="center">检测到配置漏洞</h3>
+            """, unsafe_allow_html=True)
+    if st.session_state.run == 0:
+        ele1 = c1.empty()
+        ele2 = c2.empty()
+        ele3 = c3.empty()
+        with ele1:
+            st.markdown("""
+                    <p align="center">等待开始</p>
+                """, unsafe_allow_html=True)
+        with ele2:
+            st.markdown("""
+                    <p align="center">等待开始</p>
+                """, unsafe_allow_html=True)
+        with ele3:
+            st.markdown("""
+                    <p align="center">等待开始</p>
+                """, unsafe_allow_html=True)
+        #ele1.empty()
+        #ele2.empty()
+        #ele3.empty()
+    else:
+        for i in range(0, 10):
+            ele1 = c1.empty()
+            ele2 = c2.empty()
+            ele3 = c3.empty()
+
+            if (i < 9):
+                with ele1:
+                    st.markdown("""
+                        <p align="center">Time {0}</p>
+                    """.format(i + 1), unsafe_allow_html=True)
+                with ele2:
+                    st.markdown("""
+                        <p align="center">Case {0}</p>
+                    """.format(i + 1), unsafe_allow_html=True)
+                with ele3:
+                    st.markdown("""
+                        <p align="center">Exp {0}</p>
+                    """.format(i + 1), unsafe_allow_html=True)
+            else:
+                with ele1:
+                    st.markdown("""
+                        <p align="center">✅ Time {0}</p>
+                    """.format(i + 1), unsafe_allow_html=True)
+                with ele2:
+                    st.markdown("""
+                        <p align="center">✅ Case {0}</p>
+                    """.format(i + 1), unsafe_allow_html=True)
+                with ele3:
+                    st.markdown("""
+                        <p align="center">✅ Exp {0}</p>
+                    """.format(i + 1), unsafe_allow_html=True)
+            time.sleep(1)
+            if i < 9:
+                ele1.empty()
+                ele2.empty()
+                ele3.empty()
+    c2.button("开始测试", on_click=callback4)
 
 def ui2():
+    if st.session_state.res == 2:
+        st.header("正在运行差分测试框架")
+        res2()
+        st.write(" ")
+        return 0
     if st.session_state.loading == 1:
         show_loading1()
         return 0
     if st.session_state.res == 1:
         res1()
         return 0
+    
     c1, c2, c3, c4 = st.columns([0.3, 0.4, 0.2, 0.1])
     c1.write("logo")
     c2.header("测试产品导入")
@@ -186,7 +317,17 @@ def ui2():
                         mui.Typography("Read More")
 
 def ui3():
-    st.header("这是检测")
+    st.header("Title")
+    ele1 = st.empty()
+    with ele1:
+        st.header("正在检测配置的接口...")
+    time.sleep(0.1)
+    if st.session_state.product == 0:
+        with ele1:
+            st.header("接口加载失败，请确任您已经配置了接口")
+    else:
+        with ele1:
+            st.header("接口配置成功!")
 
 def init():
     if "foot" not in st.session_state:
@@ -199,11 +340,15 @@ def init():
         st.session_state.show_rule = "null"
     if "loading" not in st.session_state:
         st.session_state.loading = 0
-
+    if "count" not in st.session_state:
+        st.session_state.count = 0
+    if "run" not in st.session_state:
+        st.session_state.run = 0
 
 def main():
     init()
     with st.sidebar:
+        st.image("./image/NIDFuzzer (1).gif")
         selected = option_menu("菜单", ["主页", '接口导入', '系统检测'],
                             icons=['house', 'bar-chart', 'file-earmark-check', 'file-earmark-code', 'exclamation-circle'], menu_icon="cast", default_index=0)
     if selected == "主页":
@@ -217,6 +362,8 @@ def main():
         ui1()
     elif st.session_state.foot == 2:
         ui2()
+    elif st.session_state.foot == 3:
+        ui3()
     
 
 if __name__ == "__main__":
