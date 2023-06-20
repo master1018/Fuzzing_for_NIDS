@@ -140,20 +140,40 @@ def callback2():
     st.session_state.foot = 2
 
 def show_loading1():
-    c1, c2 = st.columns(2)
-    with c1:
-        st.image("./image/loading.gif", width=300)
-    ele = c2.empty()
-    with ele:
-        st.header("Loading...")
+    c1, c2, c3 = st.columns([0.2, 0.5, 0.3])
+    ele1 = c2.empty()
+    with ele1:
+        st.markdown("""
+            <video width="500" autoplay="true" muted="true" loop="true" align="center">
+            <source 
+                    src="http://127.0.0.1:8000/加载.mp4" 
+                    type="video/mp4" />
+            </video>
+            """, unsafe_allow_html=True)
+    #ele = c2.empty()
+   # with ele:
+      #  st.header("Loading...")
     st.write(" ")
     st.write(" ")
     st.write(" ")
     st.write(" ")
-    time.sleep(0.3)
-    with ele:
-        st.header("Finish!")
-    st.button("下一页", on_click=callback2)
+    time.sleep(1)
+    with ele1:
+        st.empty()
+        st.image("./image/success.png", width=500)
+    #with ele:
+    #with ele1:
+        #st.empty()
+        #st.markdown("""
+         #   <video width="400" autoplay="true" muted="true" loop="true" align="center">
+        #    <source 
+        #            src="http://127.0.0.1:8000/Success.mp4" 
+        #            type="video/mp4" />
+        #    </video>
+        #    """, unsafe_allow_html=True)
+    #with ele:
+    #t.header("Finish!")
+    c2.button("下一页", on_click=callback2)
     st.session_state.loading = 0
     
 
@@ -161,7 +181,7 @@ def ui1():
     st.markdown("""
             <video width="1000" autoplay="true" muted="true" loop="true" align="center">
             <source 
-                    src="https://video.3wt.eduingame.cn/2023/06-19/39f9d0628ca44247bb3e627ce1e311d33wcn470624.mp4" 
+                    src="http://127.0.0.1:8000/封面.mp4" 
                     type="video/mp4" />
             </video>
             """, unsafe_allow_html=True)
@@ -181,6 +201,17 @@ def callback4():
 
 
 def res2():
+    if st.session_state.run == 0:
+        st.header("等待开始测试")
+    else:
+        st.markdown("""
+            <video width="300" autoplay="true" muted="true" loop="true" align="center">
+            <source 
+                    src="http://127.0.0.1:8000/正在进行模糊测试框架.mp4" 
+                    type="video/mp4" />
+            </video>
+            <h3 align="center">运行时间</h3>
+                """, unsafe_allow_html=True)
     m = st.markdown("""
     <style>
     div.stButton > button:first-child {
@@ -197,6 +228,7 @@ def res2():
     c1, c2, c3 = st.columns(3)
     st.session_state.count += 1
     with c1:
+        st.write("")
         st.markdown("""
             <video width="250" autoplay="true" muted="true" loop="true" align="center">
             <source 
@@ -207,6 +239,7 @@ def res2():
                 """, unsafe_allow_html=True)
    # c1, c2 = st.columns(2)
     with c2:
+        st.write("")
         st.markdown("""
             <video width="250" autoplay="true" muted="true" loop="true">
             <source 
@@ -216,6 +249,7 @@ def res2():
             <h3 align="center">运行测试样例</h3>
             """, unsafe_allow_html=True)
     with c3:
+        st.write("")
         st.markdown("""
             <video width="250" autoplay="true" muted="true" loop="true">
             <source 
@@ -224,6 +258,12 @@ def res2():
             </video>
             <h3 align="center">检测到配置漏洞</h3>
             """, unsafe_allow_html=True)
+
+    ele_list = []
+
+    for t in range(0, 4):
+        ele = st.empty()
+        ele_list.append(ele)
     if st.session_state.run == 0:
         ele1 = c1.empty()
         ele2 = c2.empty()
@@ -244,40 +284,62 @@ def res2():
         #ele2.empty()
         #ele3.empty()
     else:
-        for i in range(0, 10):
+        t = 0
+        for i in range(0, 1000):
             ele1 = c1.empty()
             ele2 = c2.empty()
             ele3 = c3.empty()
 
-            if (i < 9):
+            if (i < 999):
+
+                fp = open("test.txt", "r")
+
+                res = []
+
+                while True:
+                    line = fp.readline()
+                    if not line:
+                        break
+                    res.append(line)
+
                 with ele1:
                     st.markdown("""
                         <p align="center">Time {0}</p>
-                    """.format(i + 1), unsafe_allow_html=True)
+                    """.format(int(t)), unsafe_allow_html=True)
                 with ele2:
                     st.markdown("""
                         <p align="center">Case {0}</p>
-                    """.format(i + 1), unsafe_allow_html=True)
+                    """.format(i // 2), unsafe_allow_html=True)
                 with ele3:
                     st.markdown("""
                         <p align="center">Exp {0}</p>
-                    """.format(i + 1), unsafe_allow_html=True)
+                    """.format(i // 50), unsafe_allow_html=True)
+                
+                for j in range(0, len(ele_list)):
+                    with ele_list[j]:
+                        st.empty()
+                for j in range(0, len(ele_list)):
+                    cur =  (i + j) % len(res)
+                    with ele_list[j]:
+                        st.text(res[cur])
             else:
                 with ele1:
                     st.markdown("""
                         <p align="center">✅ Time {0}</p>
-                    """.format(i + 1), unsafe_allow_html=True)
+                    """.format(int(t)), unsafe_allow_html=True)
                 with ele2:
                     st.markdown("""
                         <p align="center">✅ Case {0}</p>
-                    """.format(i + 1), unsafe_allow_html=True)
+                    """.format(i // 2), unsafe_allow_html=True)
                 with ele3:
                     st.markdown("""
                         <p align="center">✅ Exp {0}</p>
-                    """.format(i + 1), unsafe_allow_html=True)
+                    """.format(i // 50), unsafe_allow_html=True)
                 st.session_state.show_res = 1
-            time.sleep(1)
-            if i < 9:
+            sleep_t = random.randint(1, 5)
+            time.sleep(sleep_t / 10)
+            t += sleep_t / 10
+            if i < 999:
                 ele1.empty()
                 ele2.empty()
                 ele3.empty()
@@ -285,7 +347,6 @@ def res2():
 
 def ui2():
     if st.session_state.res == 2:
-        st.header("正在运行差分测试框架")
         res2()
         st.write(" ")
         return 0
@@ -353,12 +414,17 @@ def ui2():
 def visual_data(sum_lines):
     return 0
 
+def callback5():
+    st.session_state.pcre = 1
+
+def callback6():
+    st.session_state.pcre = 2
+
 def ui3():
     if st.session_state.show_res == 0:
         st.write("no result")
         return 0
     elif st.session_state.show_res == 1:
-        st.header("测试结果分析")
         res_list = []
         fp = open("./tmp/res")
         while True:
@@ -399,7 +465,69 @@ def ui3():
         st_echarts(option_pie)
 
         df = list_to_df(res_list, ["IDS名", "规则集索引", "规则项索引", "漏洞"])
-        a = aggrid(df, 0,["规则集索引", "规则项索引"])
+        select = aggrid(df, 0,["规则集索引", "规则项索引"])
+        fp = open("./tmp/exp", "r")
+        exp_res = []
+        while True:
+            line = fp.readline()
+            if not line:
+                break
+            if line[len(line) - 1] == "\n":
+                line = line[0: len(line) - 1]
+            exp_res.append(line)
+        cur = 0
+        fp.close()
+        if select != -1:
+            with st.expander("签名重叠漏洞"):
+                st.write("签名重叠攻击即指依据待测规则中包含的攻击签名生成随机的数据包载荷，并且根据一条待测规则生成的数据包载荷应当只触发该规则；如果还额外触发其它规则的警报，即可认为出现了false positive假阳性情形，在网络管理员进行实际攻击分析时产生干扰")
+            with st.expander("源规则"):
+                st.code(exp_res[2])
+                st.text("规则中存在的签名:")
+                st.text(exp_res[7])
+            with st.expander("连携规则"):
+                st.code(exp_res[3])
+                st.text("规则中存在的签名:")
+                st.text(exp_res[8])
+            with st.expander("触发载荷"):
+                if st.session_state.pcre == 0:
+                    st.write(exp_res[4])
+                    st.write(exp_res[5])
+                    st.write(exp_res[6])
+                elif st.session_state.pcre == 1:
+                    fp = open("./tmp/test")
+                    print_str = []
+                    while True:
+                        line = fp.readline()
+                        if not line:
+                            break
+                        if line[len(line) - 1] == "\n":
+                            line = line[0: len(line) - 1]
+                        print_str.append(line)
+                    fp.close()
+                    st.write(print_str[0])
+                    st.write(print_str[1])
+                    st.write(print_str[2])
+                elif st.session_state.pcre == 2:
+                    fp = open("./tmp/test1")
+                    print_str = []
+                    while True:
+                        line = fp.readline()
+                        if not line:
+                            break
+                        if line[len(line) - 1] == "\n":
+                            line = line[0: len(line) - 1]
+                        print_str.append(line)
+                    fp.close()
+                    st.write(print_str[0])
+                    st.write(print_str[1])
+                    st.write(print_str[2])
+
+                c1, c2 = st.columns(2)
+                c1.button("源规则签名匹配", on_click=callback5)
+                c2.button("连携规则签名匹配", on_click=callback6)
+            
+
+
 
 def init():
     if "foot" not in st.session_state:
@@ -418,6 +546,8 @@ def init():
         st.session_state.run = 0
     if "show_res" not in st.session_state:
         st.session_state.show_res = 0
+    if "pcre" not in st.session_state:
+        st.session_state.pcre = 0
 
 def main():
     init()

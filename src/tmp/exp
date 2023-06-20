@@ -1,0 +1,10 @@
+begin
+snort3-protocol-ftp 19 SIGN_OVERLAP
+alert tcp $EXTERNAL_NET any -> $HOME_NET 21 ( msg:"PROTOCOL-FTP HELP overflow attempt"; flow:to_server,established; content:"HELP",nocase; isdataat:200,relative; pcre:"/^HELP(?!\n)\s[^\n]{200}/smi"; service:ftp; reference:bugtraq,2972; reference:cve,2001-0826; classtype:attempted-admin; sid:8479; rev:7; )
+alert tcp $EXTERNAL_NET any -> $HOME_NET 21 ( msg:"PROTOCOL-FTP format string attempt"; flow:to_server,established; content:"%",fast_pattern,nocase; pcre:"/\s+.*?%.*?%/smi"; metadata:ruleset community; service:ftp; reference:bugtraq,15352; reference:bugtraq,30993; reference:bugtraq,9800; reference:cve,2002-2074; reference:cve,2007-1195; reference:cve,2009-4769; classtype:string-detect; sid:2417;
+HELP  HELPln5?#Yr 2tG-dR6>r3eSaekZQ.<#.+PJb7r&% `zQVLj2MUTJJ$##;bd(\\ENA4r>;k1o)y0AUasNQE\\^!+Hq9VN(g%cuUR1
+&GdFw"uJ1MUupEPP<-L#z0:\'<KJ)f36y#f@mg99\\ms-g4ZcI)$UYhM!NbApw@l'>d,t&tL7>Fqw::8ih*R<=H=PnEfC5y9?04kr57`9Fc
+O\r\n
+/^HELP(?!\n)\s[^\n]{200}/smi
+/\s+.*?%.*?%/smi
+end
