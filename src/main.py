@@ -16,7 +16,20 @@ from PIL import Image
 from streamlit_elements import elements, mui, html
 from streamlit_elements import dashboard
 import random
-from test import shell
+from plt_t import *
+
+def static():
+    sum_lines = 0
+    for file in st.session_state.show_rule:
+        fp = open("./db/snort/" + file, "r")
+        while True:
+            line = fp.readline()
+            if not line:
+                break
+            if len(line) >= 10 and line[0 : 5] == "alert":
+                sum_lines += 1
+    assert(sum_lines > 0)
+    return sum_lines
 
 def aggrid(df, key, keys=0):
 
@@ -200,7 +213,7 @@ def res2():
                     src="https://www.jfrogchina.com/wp-content/uploads/2017/10/artifactory-feature-4-1.mp4" 
                     type="video/mp4" />
             </video>
-            <h3 align="center">运行测试样咧</h3>
+            <h3 align="center">运行测试样例</h3>
             """, unsafe_allow_html=True)
     with c3:
         st.markdown("""
@@ -337,11 +350,15 @@ def ui2():
                         mui.icon.DoubleArrow()
                         mui.Typography("Read More")
 
+def visual_data(sum_lines):
+    return 0
+
 def ui3():
     if st.session_state.show_res == 0:
         st.write("no result")
         return 0
     elif st.session_state.show_res == 1:
+        st.header("测试结果分析")
         res_list = []
         fp = open("./tmp/res")
         while True:
@@ -351,6 +368,36 @@ def ui3():
             if line[len(line) - 1] == "\n":
                 line = line[0: len(line) - 1]
             res_list.append(line.split(" "))
+        
+        sum_lines = static()
+        res1_list = [0, 0, 0, 0, 0]
+        res2_map = {}
+        for i in range(0, len(res_list)):
+            if res_list[i][1] not in res2_map:
+                res2_map[res_list[i][1]] = [0, 0, 0, 0]
+            if res_list[i][3] == "SIGN_OVERLAP":
+                res1_list[1] += 1
+                res2_map[res_list[i][1]][0] += 1
+            elif res_list[i][3] == "SIGN_REPEAT":
+                res1_list[2] += 1
+                res2_map[res_list[i][1]][1] += 1
+            elif res_list[i][3] == "SIGN_ALGORITHM":
+                res1_list[3] += 1
+                res2_map[res_list[i][1]][2] += 1
+            else:
+                res1_list[4] += 1
+                res2_map[res_list[i][1]][3] += 1
+        res1_list[0] = sum_lines - res1_list[1] - res1_list[2] - res1_list[3] - res1_list[4]
+        for i in range(0, len(res1_list)):
+            option_pie["dataset"]["source"][i + 1][1] = res1_list[i]
+        
+        option_bar["xAxis"]["data"] = []
+        for c in res2_map:
+            option_bar["xAxis"]["data"].append(str(c))
+        
+
+        st_echarts(option_pie)
+
         df = list_to_df(res_list, ["IDS名", "规则集索引", "规则项索引", "漏洞"])
         a = aggrid(df, 0,["规则集索引", "规则项索引"])
 
@@ -391,12 +438,13 @@ def main():
         ui2()
     elif st.session_state.foot == 3:
         st.session_state.show_res = 1
+        st.session_state.show_rule = ["snort3-browser-chrome.rules", "snort3-sql.rules", "snort3-protocol-ftp.rules", "snort3-protocol-tftp.rules", "snort3-protocol-telnet.rules"]
         ui3()
     
 
 if __name__ == "__main__":
     st.set_page_config(
-        "Tamer：代码克隆检测系统",
+        "面向网络入侵检测系统的查分测试框架",
         "📊",
         initial_sidebar_state="expanded",
         layout="wide",
