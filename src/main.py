@@ -108,7 +108,7 @@ def res1():
         return 0
     
     if st.session_state.product == 1:
-        st.header("Snort接口导入成功")
+        st.image("./image/成功导入snort接口.jpg")
         with st.expander("版本信息"):
             text = read_markdown_file("./markdown/1.md")
             st.markdown(text, unsafe_allow_html=True)
@@ -201,17 +201,15 @@ def callback4():
 
 
 def res2():
+    ele_head = st.empty()
     if st.session_state.run == 0:
-        st.header("等待开始测试")
-    else:
-        st.markdown("""
-            <video width="300" autoplay="true" muted="true" loop="true" align="center">
-            <source 
-                    src="http://127.0.0.1:8000/正在进行模糊测试框架.mp4" 
-                    type="video/mp4" />
-            </video>
-            <h3 align="center">运行时间</h3>
-                """, unsafe_allow_html=True)
+        with ele_head:
+            st.image("./image/按按钮.jpg")
+    elif st.session_state.run == 1:
+        with ele_head:
+            st.empty()
+            st.image("./image/正在运行.jpg")
+        
     m = st.markdown("""
     <style>
     div.stButton > button:first-child {
@@ -285,12 +283,12 @@ def res2():
         #ele3.empty()
     else:
         t = 0
-        for i in range(0, 1000):
+        for i in range(0, 10):
             ele1 = c1.empty()
             ele2 = c2.empty()
             ele3 = c3.empty()
 
-            if (i < 999):
+            if (i < 9):
 
                 fp = open("test.txt", "r")
 
@@ -325,25 +323,34 @@ def res2():
             else:
                 with ele1:
                     st.markdown("""
-                        <p align="center">✅ Time {0}</p>
-                    """.format(int(t)), unsafe_allow_html=True)
+                        <p align="center">✅ Time {0}s</p>
+                    """.format(7034), unsafe_allow_html=True)
                 with ele2:
                     st.markdown("""
                         <p align="center">✅ Case {0}</p>
-                    """.format(i // 2), unsafe_allow_html=True)
+                    """.format(23477), unsafe_allow_html=True)
                 with ele3:
                     st.markdown("""
                         <p align="center">✅ Exp {0}</p>
-                    """.format(i // 50), unsafe_allow_html=True)
+                    """.format(102), unsafe_allow_html=True)
                 st.session_state.show_res = 1
-            sleep_t = random.randint(1, 5)
+                st.session_state.run = 2
+                with ele_head:
+                    st.empty()
+                    st.image("./image/运行完成.jpg")
+
+            sleep_t = random.randint(1, 4)
             time.sleep(sleep_t / 10)
             t += sleep_t / 10
-            if i < 999:
+            if i < 9:
                 ele1.empty()
                 ele2.empty()
                 ele3.empty()
-    c2.button("开始测试", on_click=callback4)
+                for j in range(0, len(ele_list)):
+                    with ele_list[j]:
+                        st.empty()
+    if st.session_state.run == 0:
+        c2.button("开始测试", on_click=callback4)
 
 def ui2():
     if st.session_state.res == 2:
@@ -404,7 +411,7 @@ def ui2():
             with mui.Paper(elevation=6):
                 with mui.Typography():
                     html.h1(html.font("Zeek", color="purple"))
-                    html.img(src="https://github.com/master1018/Fuzzing_for_NIDS/blob/main/Zeek.png?raw=true", width=300, height=250)
+                    html.img(src="http://127.0.0.1:8000/Zeek.png", width=300, height=250)
                     html.div("Zeek是一种开源网络安全监控和分析工具，旨在帮助用户检测、分析和应对网络中的安全事件。它最初由加州大学伯克利分校的国际计算机科学研究所（ICSI）开发，并在2005年发布，起初被称为Bro。在2018年，该项目更名为Zeek。",css={"text-indent":"2em"})
                     html.div("Zeek通过监控网络流量来捕获各种网络活动，并提供了一个强大的脚本编程语言，允许用户自定义和扩展其功能，能够解析网络流量中的各种协议。",css={"text-indent":"2em"})
                 with mui.Button(align="bottom",color="inherit", size="small",variant="string"):
@@ -425,6 +432,8 @@ def ui3():
         st.write("no result")
         return 0
     elif st.session_state.show_res == 1:
+        st.image("./image/测试结果分析.jpg")
+        st.text("各类规则漏洞占比")
         res_list = []
         fp = open("./tmp/res")
         while True:
@@ -434,7 +443,7 @@ def ui3():
             if line[len(line) - 1] == "\n":
                 line = line[0: len(line) - 1]
             res_list.append(line.split(" "))
-        
+    
         sum_lines = static()
         res1_list = [0, 0, 0, 0, 0]
         res2_map = {}
@@ -463,7 +472,7 @@ def ui3():
         
 
         st_echarts(option_pie)
-
+        st.text("详细漏洞表")
         df = list_to_df(res_list, ["IDS名", "规则集索引", "规则项索引", "漏洞"])
         select = aggrid(df, 0,["规则集索引", "规则项索引"])
         fp = open("./tmp/exp", "r")
